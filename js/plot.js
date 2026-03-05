@@ -2,23 +2,32 @@ let currentData = {};
 
 function updateTissues() {
     let gene = document.getElementById("gene").value;
+    console.log("Selected gene:", gene);
 
-    fetch(`data/${gene}.json`)
-        .then(response => response.json())
+    const jsonPath = `data/${gene}.json`;
+    console.log("Fetching JSON from:", jsonPath);
+
+    fetch(jsonPath)
+        .then(response => {
+            console.log("Fetch response:", response);
+            if (!response.ok) throw new Error("HTTP error " + response.status);
+            return response.json();
+        })
         .then(data => {
+            console.log("Loaded JSON data:", data);
             currentData = data;
 
             let tissueSelect = document.getElementById("tissue");
             tissueSelect.innerHTML = "";
 
             for (let tissue in data) {
+                console.log("Adding tissue:", tissue);
                 let option = document.createElement("option");
                 option.value = tissue;
                 option.text = tissue;
                 tissueSelect.appendChild(option);
             }
 
-            // Plot first tissue automatically
             updatePlot();
         })
         .catch(error => {
