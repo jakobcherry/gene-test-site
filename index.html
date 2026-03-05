@@ -15,15 +15,14 @@
 <h1>Test Gene/Tissue Browser</h1>
 
 <label for="gene">Gene:</label>
-<select id="gene">
+<select id="gene" onchange="updateTissues()">
   <option value="GeneA">GeneA</option>
   <option value="GeneB">GeneB</option>
 </select>
 
 <label for="tissue">Tissue:</label>
 <select id="tissue">
-  <option value="Tissue1">Tissue1</option>
-  <option value="Tissue2">Tissue2</option>
+  <!-- Options will be filled dynamically -->
 </select>
 
 <button onclick="updatePlot()">Show Plot</button>

@@ -1,27 +1,54 @@
-function updatePlot() {
+let currentData = {};
+
+// Load JSON for selected gene and update tissue dropdown
+function updateTissues() {
     let gene = document.getElementById("gene").value;
-    let tissue = document.getElementById("tissue").value;
 
     fetch(`data/${gene}.json`)
         .then(response => response.json())
         .then(data => {
-            let trace = {
-                x: data[tissue].x,
-                y: data[tissue].y,
-                type: 'scatter',
-                mode: 'lines+markers',
-                marker: {color: 'blue'}
-            };
+            currentData = data; // store current gene's data
 
-            let layout = {
-                title: `${gene} - ${tissue}`,
-                xaxis: { title: "Variant" },
-                yaxis: { title: "Value" }
-            };
+            let tissueSelect = document.getElementById("tissue");
+            tissueSelect.innerHTML = ""; // clear previous options
 
-            Plotly.newPlot('plotDiv', [trace], layout);
+            for (let tissue in data) {
+                let option = document.createElement("option");
+                option.value = tissue;
+                option.text = tissue;
+                tissueSelect.appendChild(option);
+            }
+
+            // Automatically plot the first tissue
+            updatePlot();
+        })
+        .catch(error => {
+            console.error("Error loading JSON for gene:", gene, error);
         });
 }
 
-// Render default plot on page load
-updatePlot();
+// Plot the selected tissue
+function updatePlot() {
+    let tissue = document.getElementById("tissue").value;
+
+    if (!tissue || !currentData[tissue]) return;
+
+    let trace = {
+        x: currentData[tissue].x,
+        y: currentData[tissue].y,
+        type: 'scatter',
+        mode: 'lines+markers',
+        marker: {color: 'blue'}
+    };
+
+    let layout = {
+        title: `${document.getElementById("gene").value} - ${tissue}`,
+        xaxis: { title: "Variant" },
+        yaxis: { title: "Value" }
+    };
+
+    Plotly.newPlot('plotDiv', [trace], layout);
+}
+
+// Initialize page on load
+updateTissues();
