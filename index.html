@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gene-Tissue Test Browser</title>
+  <!-- Plotly library -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    label { margin-right: 10px; }
+    select, input { margin-right: 20px; }
+  </style>
+</head>
+<body>
+
+<h1>Test Gene/Tissue Browser</h1>
+
+<label for="gene">Gene:</label>
+<select id="gene">
+  <option value="GeneA">GeneA</option>
+  <option value="GeneB">GeneB</option>
+</select>
+
+<label for="tissue">Tissue:</label>
+<select id="tissue">
+  <option value="Tissue1">Tissue1</option>
+  <option value="Tissue2">Tissue2</option>
+</select>
+
+<button onclick="updatePlot()">Show Plot</button>
+
+<div id="plotDiv" style="width:700px;height:500px;margin-top:30px;"></div>
+
+<!-- Link to your JavaScript -->
+<script src="js/plot.js"></script>
+
+</body>
+</html>
