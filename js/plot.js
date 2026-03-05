@@ -1,16 +1,15 @@
 let currentData = {};
 
-// Load JSON for selected gene and update tissue dropdown
 function updateTissues() {
     let gene = document.getElementById("gene").value;
 
     fetch(`data/${gene}.json`)
         .then(response => response.json())
         .then(data => {
-            currentData = data; // store current gene's data
+            currentData = data;
 
             let tissueSelect = document.getElementById("tissue");
-            tissueSelect.innerHTML = ""; // clear previous options
+            tissueSelect.innerHTML = "";
 
             for (let tissue in data) {
                 let option = document.createElement("option");
@@ -19,7 +18,7 @@ function updateTissues() {
                 tissueSelect.appendChild(option);
             }
 
-            // Automatically plot the first tissue
+            // Plot first tissue automatically
             updatePlot();
         })
         .catch(error => {
@@ -27,10 +26,8 @@ function updateTissues() {
         });
 }
 
-// Plot the selected tissue
 function updatePlot() {
     let tissue = document.getElementById("tissue").value;
-
     if (!tissue || !currentData[tissue]) return;
 
     let trace = {
@@ -38,7 +35,7 @@ function updatePlot() {
         y: currentData[tissue].y,
         type: 'scatter',
         mode: 'lines+markers',
-        marker: {color: 'blue'}
+        marker: { color: 'blue' }
     };
 
     let layout = {
